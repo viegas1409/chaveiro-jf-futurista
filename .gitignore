@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.DS_Store
+.vscode/
+*.log
+hero-bg-image.png
+hero_bg.png
+key_icon.png
+logo-jf.jpg
