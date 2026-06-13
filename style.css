@@ -62,7 +62,8 @@ body {
 
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
-img { max-width: 100%; height: auto; }
+img { max-width: 100%; height: auto; display: block; }
+button, a { touch-action: manipulation; }
 
 /* ============================================================
    PARTICLES CANVAS
@@ -381,35 +382,9 @@ img { max-width: 100%; height: auto; }
   background-image: radial-gradient(circle at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.55) 100%);
 }
 
-/* subtle circular decorative background placed in the hero */
-.hero-bg-image {
-  position: absolute;
-  right: 6%;
-  top: 18%;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background-image: url('hero-bg-image.png');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.06;
-  filter: blur(1px) saturate(0.95);
-  pointer-events: none;
-  z-index: 0;
-  mix-blend-mode: multiply;
-}
-
 /* Hide the scrolling marquee on smaller screens to avoid clutter */
 @media (max-width: 768px) {
   .services-marquee { display: none; }
-}
-
-@media (max-width: 1024px) {
-  .hero-bg-image { width: 380px; height: 380px; right: 4%; top: 50%; opacity: 0.055; }
-}
-
-@media (max-width: 768px) {
-  .hero-bg-image { display: none; }
 }
 
 /* Mobile: adjust background focal point to keep main subject visible */
@@ -1836,6 +1811,19 @@ img { max-width: 100%; height: auto; }
   .header-inner { height: 64px; }
   .logo-img { height: 48px; width: 48px; }
   .hero-content { padding: 80px 18px 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .chat-toggle-pulse,
+  .typing-dot,
+  .step-icon::before,
+  .scroll-line,
+  .cta-pulse,
+  .image-badge-float {
+    animation: none !important;
+  }
 }
 
 @media (max-width: 768px) {

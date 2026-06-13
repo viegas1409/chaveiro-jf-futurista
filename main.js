@@ -8,10 +8,17 @@
   const ctx = canvas.getContext('2d');
   let particles = [];
   let W, H;
+  let isCompact = false;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
+    isCompact = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 900;
+    particles = [];
+    const area = W * H;
+    const count = Math.min(isCompact ? 60 : 120, Math.max(18, Math.floor(area / (isCompact ? 25000 : 12000))));
+    for (let i = 0; i < count; i++) particles.push(new Particle());
   }
 
   resize();
@@ -42,10 +49,8 @@
     }
   }
 
-  const count = Math.min(120, Math.floor(W * H / 12000));
-  for (let i = 0; i < count; i++) particles.push(new Particle());
-
   function connectParticles() {
+    if (isCompact || reduceMotion) return;
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
@@ -91,9 +96,11 @@
   const hamburger = document.getElementById('hamburger');
   const nav = document.getElementById('main-nav');
   hamburger.addEventListener('click', () => {
+    const isOpen = !nav.classList.contains('open');
     nav.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', String(isOpen));
     const spans = hamburger.querySelectorAll('span');
-    if (nav.classList.contains('open')) {
+    if (isOpen) {
       spans[0].style.transform = 'translateY(7px) rotate(45deg)';
       spans[1].style.opacity = '0';
       spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
@@ -106,6 +113,7 @@
   nav.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
       nav.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
       hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
     });
   });
@@ -114,6 +122,7 @@
   window.addEventListener('resize', () => {
     if (window.innerWidth > 900 && nav.classList.contains('open')) {
       nav.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
       hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
     }
   });
@@ -358,7 +367,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       const typing = document.createElement('div');
       typing.className = 'msg-bot';
       typing.innerHTML = `
-        <img src="${LOGO}" class="msg-bot-avatar" alt="JF" />
+        <img src="${LOGO}" class="msg-bot-avatar" alt="JF" loading="lazy" />
         <div class="typing-indicator">
           <span class="typing-dot"></span>
           <span class="typing-dot"></span>

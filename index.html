@@ -19,10 +19,10 @@
   <header id="main-header">
     <div class="header-inner">
       <div class="logo">
-        <img src="logo-jf.jpg" alt="Chaveiro JF 24 Horas" class="logo-img" />
+        <img src="logo-jf.jpg" alt="Chaveiro JF 24 Horas" class="logo-img" loading="lazy" />
       </div>
 
-      <nav class="main-nav" id="main-nav">
+      <nav class="main-nav" id="main-nav" role="navigation" aria-label="Menu principal">
         <a href="#servicos" class="nav-link">Serviços</a>
         <a href="#como-funciona" class="nav-link">Como Funciona</a>
         <a href="#areas" class="nav-link">Área de Atendimento</a>  
@@ -35,32 +35,31 @@
         (11) 96383-0204
       </a>
 
-      <button class="hamburger" id="hamburger" aria-label="Menu">
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
+  <main>
 
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-bg">
       <div class="hero-overlay"></div>
-      <!-- subtle circular background image (decorative) -->
-      <div class="hero-bg-image" aria-hidden="true"></div>
     </div>
 
     <div class="hero-content">
       <div class="hero-badge">
         <span class="badge-dot"></span>
-        Disponível 24h por dia · 7 dias por semana
+        Atendimento 24 horas, 7 dias por semana
       </div>
       <h1 class="hero-title">
         <span class="gradient-text">Chaveiro JF</span><br/>
         <span class="hero-subtitle-big">24 Horas</span>
       </h1>
       <p class="hero-desc">
-        Atendimento <strong>imediato</strong> para emergências automotivas, residenciais e comerciais.<br/>
-        Tecnologia e agilidade quando você mais precisa.
+        Atendimento <strong>imediato</strong> para emergências automotivas, residenciais e comerciais. <br/>
+        Nossa equipe chega rápido com tecnologia e segurança onde você estiver.
       </p>
 
       <div class="hero-actions">
@@ -105,7 +104,7 @@
       <div class="section-header">
         <span class="section-tag">O que fazemos</span>
         <h2 class="section-title">Nossos <span class="gradient-text">Serviços</span></h2>
-        <p class="section-desc">Soluções completas para qualquer situação de emergência com chaves e fechaduras</p>
+        <p class="section-desc">Soluções rápidas e seguras para qualquer emergência com chaves, fechaduras e acessos.</p>
       </div>
 
       <div class="services-grid">
@@ -336,7 +335,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="logo">
-          <img src="logo-jf.jpg" alt="Chaveiro JF 24 Horas" class="logo-img" />
+          <img src="logo-jf.jpg" alt="Chaveiro JF 24 Horas" class="logo-img" loading="lazy" decoding="async" />
         </div>
         <p class="footer-brand-desc">Especialistas em soluções de chaveiro automotivo, residencial e comercial. Disponíveis 24 horas por dia, 7 dias por semana.</p>
         <div class="footer-social">
@@ -383,6 +382,7 @@
         </ul>
       </div>
     </div>
+  </main>
 
     <!-- chat widget moved to page corner -->
 
