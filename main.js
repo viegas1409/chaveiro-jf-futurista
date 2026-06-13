@@ -109,6 +109,14 @@
       hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
     });
   });
+
+  // Ensure mobile nav is closed when switching to larger screens
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900 && nav.classList.contains('open')) {
+      nav.classList.remove('open');
+      hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    }
+  });
 })();
 
 // ─── SMOOTH SCROLL ──────────────────────────────────────────
@@ -503,6 +511,30 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   function closeChat() {
     widget.classList.remove('open');
   }
+
+  // Ensure widget stays anchored to bottom-right and resets position
+  function ensureWidgetPosition() {
+    try {
+      // force bottom-right fixed positioning and clear any inline top/left
+      widget.style.bottom = '20px';
+      widget.style.top = '';
+      widget.style.left = '';
+      widget.style.right = '20px';
+      widget.style.position = 'fixed';
+    } catch (e) {
+      // ignore if widget not present
+    }
+  }
+
+  // apply on load and whenever chat open/close
+  ensureWidgetPosition();
+  const origOpen = openChat;
+  const origClose = closeChat;
+  openChat = function() { ensureWidgetPosition(); origOpen(); };
+  closeChat = function() { origClose(); ensureWidgetPosition(); };
+
+  // also enforce on resize (some CSS or browser quirks can move fixed elements)
+  window.addEventListener('resize', ensureWidgetPosition, { passive: true });
 
   toggle.addEventListener('click', () => {
     widget.classList.contains('open') ? closeChat() : openChat();
