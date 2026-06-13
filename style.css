@@ -62,8 +62,7 @@ body {
 
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
-img { max-width: 100%; height: auto; display: block; }
-button, a { touch-action: manipulation; }
+img { max-width: 100%; height: auto; }
 
 /* ============================================================
    PARTICLES CANVAS
@@ -364,22 +363,38 @@ button, a { touch-action: manipulation; }
   position: absolute;
   inset: 0;
   z-index: 0;
-  /* Background image for hero (visual/logo artwork) */
-  background-image: url('hero_bg.png');
-  background-size: cover; /* requirement: cover */
-  /* keep the top of the image visible behind the title */
-  background-position: center 20%;
-  background-repeat: no-repeat; /* requirement: no-repeat */
-  background-blend-mode: normal;
+  background: radial-gradient(ellipse at 60% 40%, rgba(245,196,0,0.07) 0%, transparent 55%),
+              radial-gradient(ellipse at 20% 80%, rgba(255,149,0,0.05) 0%, transparent 45%),
+              #0a0a0a;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  z-index: 1; /* sit above the image but below the text */
-  /* softer overlay so the image remains visible while preserving contrast */
-  background-color: rgba(0,0,0,0.55);
-  background-image: radial-gradient(circle at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.55) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.06) 0%,
+    rgba(10, 10, 10, 0.18) 60%,
+    rgba(10, 10, 10, 0.7) 100%
+  );
+}
+
+/* subtle circular decorative background placed in the hero */
+.hero-bg-image {
+  position: absolute;
+  right: 6%;
+  top: 18%;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background-image: url('hero-bg-image.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.06;
+  filter: blur(1px) saturate(0.95);
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
 }
 
 /* Hide the scrolling marquee on smaller screens to avoid clutter */
@@ -387,17 +402,17 @@ button, a { touch-action: manipulation; }
   .services-marquee { display: none; }
 }
 
-/* Mobile: adjust background focal point to keep main subject visible */
+@media (max-width: 1024px) {
+  .hero-bg-image { width: 380px; height: 380px; right: 4%; top: 50%; opacity: 0.055; }
+}
+
 @media (max-width: 768px) {
-  .hero-bg {
-    /* shift slightly up so primary elements remain visible on narrow viewports */
-    background-position: center 30%;
-  }
+  .hero-bg-image { display: none; }
 }
 
 .hero-content {
   position: relative;
-  z-index: 3; /* ensure content sits above overlay and image */
+  z-index: 2;
   text-align: center;
   padding: 120px 24px 60px;
   max-width: 900px;
@@ -443,9 +458,6 @@ button, a { touch-action: manipulation; }
   color: #fff;
   margin-bottom: 8px;
   animation: fadeUp 0.8s ease 0.1s both;
-  position: relative;
-  z-index: 4; /* keep above all decorations */
-  text-shadow: 0 8px 30px rgba(0,0,0,0.6); /* improve contrast over the image */
 }
 
 .hero-subtitle-big {
@@ -986,63 +998,6 @@ button, a { touch-action: manipulation; }
   border-radius: var(--radius-sm);
 }
 
-/* ============================================================
-   RESPONSIVE ADJUSTMENTS
-   ============================================================ */
-
-@media (max-width: 900px) {
-  .header-inner { height: 64px; padding: 0 12px; }
-  .main-nav {
-    display: none;
-    position: fixed;
-    top: 64px;
-    right: 12px;
-    background: rgba(10,10,10,0.96);
-    border-radius: 12px;
-    padding: 16px;
-    flex-direction: column;
-    gap: 12px;
-    width: calc(100% - 48px);
-    max-width: 360px;
-    box-shadow: var(--shadow-card);
-    z-index: 1001;
-  }
-
-  .main-nav.open { display: flex; }
-
-  .hamburger { display: flex; }
-
-  .btn-header-call { display: none; }
-
-  .hero { padding-top: 64px; }
-
-  /* reduce heavy canvas and decorative imagery on mobile */
-  #particles-canvas { display: none; }
-  .hero-bg-image { display: none; }
-
-  .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-
-  .hero-content { padding: 24px; text-align: center; }
-  .hero-title { font-size: clamp(2rem, 6vw, 2.6rem); }
-  .hero-desc { font-size: 1rem; }
-  .hero-actions { flex-direction: column; gap: 12px; align-items: center; }
-  .hero-stats { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-}
-
-@media (max-width: 480px) {
-  .header-inner { height: 56px; }
-  .logo-img { height: 46px; width: 46px; }
-  .hero-title { font-size: 1.8rem; }
-  .btn-primary, .btn-whatsapp { padding: 12px 20px; }
-  .container { padding: 0 16px; }
-  .services-grid { gap: 16px; }
-}
-
-/* Minor defaults if not overridden */
-.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-.service-card { min-height: 320px; }
-
-
 .feature-item h4 {
   font-size: 0.95rem;
   font-weight: 600;
@@ -1317,9 +1272,9 @@ button, a { touch-action: manipulation; }
    ============================================================ */
 .chat-widget {
   position: fixed;
-  bottom: 20px; /* anchor bottom-right as requested */
-  right: 20px;
-  z-index: 99999; /* ensure it stays above other elements */
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -1402,15 +1357,11 @@ button, a { touch-action: manipulation; }
   flex-direction: column;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,196,0,0.08);
-  position: absolute; /* absolute so it doesn't push the toggle */
-  bottom: calc(100% + 8px); /* appear above the toggle */
-  right: 0;
-  transform: scale(0.92) translateY(8px);
+  transform: scale(0.92) translateY(16px);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.18s ease;
-  transform-origin: bottom right; /* open upwards without moving toggle */
-  z-index: 99999; /* stay above other elements */
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease;
+  transform-origin: bottom right;
 }
 
 .chat-widget.open .chat-box {
@@ -1692,65 +1643,13 @@ button, a { touch-action: manipulation; }
   .chat-box {
     width: calc(100vw - 24px);
     max-height: 70vh;
-    right: 0;
-    left: auto;
-    bottom: calc(100% + 8px);
   }
   .chat-widget {
     right: 12px;
-    bottom: 12px; /* keep compact in bottom-right on small screens */
+    bottom: 16px;
   }
   .chat-toggle-label { display: none; }
   .chat-toggle { padding: 0; width: 58px; border-radius: 50%; justify-content: center; }
-}
-
-/* Make chat toggle compact and non-intrusive by default */
-.chat-widget {
-  bottom: 20px;
-  right: 20px;
-  z-index: 99999;
-}
-
-/* Compact circular toggle when widget is closed */
-.chat-widget:not(.open) .chat-toggle {
-  width: 58px;
-  height: 58px;
-  padding: 0;
-  border-radius: 50%;
-  justify-content: center;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-}
-
-.chat-widget:not(.open) .chat-toggle-label,
-.chat-widget:not(.open) .chat-toggle-sub {
-  display: none;
-}
-
-/* Expand on hover (desktop) or when open */
-.chat-widget:hover .chat-toggle,
-.chat-widget.open .chat-toggle {
-  width: auto;
-  padding: 0 18px 0 8px;
-  border-radius: var(--radius-pill);
-}
-
-.chat-widget:hover .chat-toggle-label,
-.chat-widget.open .chat-toggle-label,
-.chat-widget.open .chat-toggle-sub {
-  display: inline-block;
-}
-
-/* Tone down pulse to be less distracting */
-.chat-toggle-pulse {
-  inset: -6px;
-  opacity: 0.18;
-  border-width: 1px;
-}
-
-/* Keep circular appearance on small screens */
-@media (max-width: 640px) {
-  .chat-widget:not(.open) .chat-toggle { width: 56px; height: 56px; }
-  .chat-widget:hover .chat-toggle { width: 56px; }
 }
 
 /* ============================================================
@@ -1811,19 +1710,6 @@ button, a { touch-action: manipulation; }
   .header-inner { height: 64px; }
   .logo-img { height: 48px; width: 48px; }
   .hero-content { padding: 80px 18px 40px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .chat-toggle-pulse,
-  .typing-dot,
-  .step-icon::before,
-  .scroll-line,
-  .cta-pulse,
-  .image-badge-float {
-    animation: none !important;
-  }
 }
 
 @media (max-width: 768px) {

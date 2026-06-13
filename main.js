@@ -8,17 +8,10 @@
   const ctx = canvas.getContext('2d');
   let particles = [];
   let W, H;
-  let isCompact = false;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
-    isCompact = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 900;
-    particles = [];
-    const area = W * H;
-    const count = Math.min(isCompact ? 60 : 120, Math.max(18, Math.floor(area / (isCompact ? 25000 : 12000))));
-    for (let i = 0; i < count; i++) particles.push(new Particle());
   }
 
   resize();
@@ -49,8 +42,10 @@
     }
   }
 
+  const count = Math.min(120, Math.floor(W * H / 12000));
+  for (let i = 0; i < count; i++) particles.push(new Particle());
+
   function connectParticles() {
-    if (isCompact || reduceMotion) return;
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
@@ -96,11 +91,9 @@
   const hamburger = document.getElementById('hamburger');
   const nav = document.getElementById('main-nav');
   hamburger.addEventListener('click', () => {
-    const isOpen = !nav.classList.contains('open');
     nav.classList.toggle('open');
-    hamburger.setAttribute('aria-expanded', String(isOpen));
     const spans = hamburger.querySelectorAll('span');
-    if (isOpen) {
+    if (nav.classList.contains('open')) {
       spans[0].style.transform = 'translateY(7px) rotate(45deg)';
       spans[1].style.opacity = '0';
       spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
@@ -113,18 +106,8 @@
   nav.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
       nav.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
       hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
     });
-  });
-
-  // Ensure mobile nav is closed when switching to larger screens
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 900 && nav.classList.contains('open')) {
-      nav.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
-    }
   });
 })();
 
@@ -367,7 +350,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       const typing = document.createElement('div');
       typing.className = 'msg-bot';
       typing.innerHTML = `
-        <img src="${LOGO}" class="msg-bot-avatar" alt="JF" loading="lazy" />
+        <img src="${LOGO}" class="msg-bot-avatar" alt="JF" />
         <div class="typing-indicator">
           <span class="typing-dot"></span>
           <span class="typing-dot"></span>
@@ -520,30 +503,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   function closeChat() {
     widget.classList.remove('open');
   }
-
-  // Ensure widget stays anchored to bottom-right and resets position
-  function ensureWidgetPosition() {
-    try {
-      // force bottom-right fixed positioning and clear any inline top/left
-      widget.style.bottom = '20px';
-      widget.style.top = '';
-      widget.style.left = '';
-      widget.style.right = '20px';
-      widget.style.position = 'fixed';
-    } catch (e) {
-      // ignore if widget not present
-    }
-  }
-
-  // apply on load and whenever chat open/close
-  ensureWidgetPosition();
-  const origOpen = openChat;
-  const origClose = closeChat;
-  openChat = function() { ensureWidgetPosition(); origOpen(); };
-  closeChat = function() { origClose(); ensureWidgetPosition(); };
-
-  // also enforce on resize (some CSS or browser quirks can move fixed elements)
-  window.addEventListener('resize', ensureWidgetPosition, { passive: true });
 
   toggle.addEventListener('click', () => {
     widget.classList.contains('open') ? closeChat() : openChat();
