@@ -363,9 +363,15 @@ img { max-width: 100%; height: auto; }
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: radial-gradient(ellipse at 60% 40%, rgba(245,196,0,0.07) 0%, transparent 55%),
-              radial-gradient(ellipse at 20% 80%, rgba(255,149,0,0.05) 0%, transparent 45%),
-              #0a0a0a;
+  background-image: url('hero_bg.png'),
+                    radial-gradient(ellipse at 60% 40%, rgba(245,196,0,0.07) 0%, transparent 55%),
+                    radial-gradient(ellipse at 20% 80%, rgba(255,149,0,0.05) 0%, transparent 45%);
+  background-size: cover, auto, auto;
+  background-position: center 20%, 60% 40%, 20% 80%;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-color: #0a0a0a;
+  filter: blur(2px);
+  transform: scale(1.02);
 }
 
 .hero-overlay {
@@ -373,10 +379,11 @@ img { max-width: 100%; height: auto; }
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(10, 10, 10, 0.06) 0%,
-    rgba(10, 10, 10, 0.18) 60%,
-    rgba(10, 10, 10, 0.7) 100%
-  );
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0.38) 45%,
+    rgba(0, 0, 0, 0.72) 100%
+  ),
+  radial-gradient(circle at top center, rgba(0, 0, 0, 0.18), transparent 35%);
 }
 
 /* subtle circular decorative background placed in the hero */
@@ -1271,14 +1278,18 @@ img { max-width: 100%; height: auto; }
    AI CHAT WIDGET
    ============================================================ */
 .chat-widget {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  z-index: 1000;
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: 99999 !important;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
+  pointer-events: auto;
+  overflow: visible;
 }
 
 /* ── Toggle Button ── */
@@ -1348,6 +1359,9 @@ img { max-width: 100%; height: auto; }
 
 /* ── Chat Box ── */
 .chat-box {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
   width: 360px;
   max-height: 520px;
   background: linear-gradient(180deg, rgba(40,40,40,0.95), rgba(34,34,34,0.95));
@@ -1361,7 +1375,7 @@ img { max-width: 100%; height: auto; }
   opacity: 0;
   pointer-events: none;
   transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease;
-  transform-origin: bottom right;
+  transform-origin: top right;
 }
 
 .chat-widget.open .chat-box {
@@ -1643,10 +1657,12 @@ img { max-width: 100%; height: auto; }
   .chat-box {
     width: calc(100vw - 24px);
     max-height: 70vh;
+    top: calc(100% + 8px);
   }
   .chat-widget {
+    top: 16px;
     right: 12px;
-    bottom: 16px;
+    bottom: auto;
   }
   .chat-toggle-label { display: none; }
   .chat-toggle { padding: 0; width: 58px; border-radius: 50%; justify-content: center; }
@@ -1811,11 +1827,67 @@ img { max-width: 100%; height: auto; }
     max-width: 300px;
     justify-content: center;
   }
+}
 
+@media (max-width: 1200px) {
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .header-inner {
+    gap: 18px;
+  }
+
+  .hero-content {
+    padding: 100px 20px 46px;
+    max-width: 780px;
+  }
+
+  .hero-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .main-nav {
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-content {
+    padding: 64px 16px 32px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 10vw, 2.8rem);
+  }
+
+  .hero-subtitle-big {
+    font-size: clamp(1.1rem, 6.5vw, 1.6rem);
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .btn-primary,
+  .btn-whatsapp {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .main-nav {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
   .hero-stats { display: none; }
-
   .service-card { padding: 28px 24px; }
-
   .areas-grid { gap: 8px; }
   .area-pill { padding: 8px 16px; font-size: 0.8rem; }
 }
